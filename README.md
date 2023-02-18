@@ -194,7 +194,7 @@ The repository contains the following folders:
 - `middleswares`: a simple logger that logs the requests
 - `models`: contains simple Typescript models such as `Blockchain.ts`, `Block.ts`, `Trasnsaction.ts` and `Network.ts` that contain the necessary properties to implement a working blockchain.
 
-The example will output different information about the blockchain based on the API responses [listed above](#getting-started) :point_up:
+The example will output different information about the blockchain based on the API responses [listed above](#getting-started-closed_book) :point_up:
 
 ## Conclusion
 This repository provides a simple implementation of a blockchain in Node.js. The code serves as a starting point for further development and experimentation with the blockchain technology.
