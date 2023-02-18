@@ -20,6 +20,8 @@ class ChainController implements IControllerBase {
         this.router.post(this.path + '/mine', this.mineNewBlock);
         this.router.get(this.path + '/transactions', this.getPendingTransactions);
         this.router.post(this.path + '/transactions/new', this.addNewTransaction);
+        this.router.post(this.path + '/nodes/add', this.addNewNode);
+        this.router.get(this.path + '/nodes/conflicts/resolve', this.resolveNodeConflicts);
     }
 
     public getBlockchain(req: Request, res: Response) {
@@ -62,13 +64,13 @@ class ChainController implements IControllerBase {
         const { sender, recipient, amount }: Transaction = req.body;
 
         if (!sender) {
-            throw new Error('Missing request parameter: sender');
+            throw new Error('Missing request body parameter: sender');
         }
         if (!recipient) {
-            throw new Error('Missing request parameter: recipient');
+            throw new Error('Missing request body parameter: recipient');
         }
         if (!amount) {
-            throw new Error('Missing request parameter: amount');
+            throw new Error('Missing request body parameter: amount');
         }
 
         const index = blockchain.addNewTransaction(sender, recipient, amount);
@@ -76,6 +78,39 @@ class ChainController implements IControllerBase {
         res.send({
             message: `New transaction/s will be added to block number ${index}`
         });
+    }
+
+    public addNewNode(req: Request, res: Response) {
+        const nodes: Array<string> = req.body?.nodes;
+
+        if (!nodes || nodes.length === 0) {
+            throw new Error('Missing request body parameter: nodes');
+        }
+
+        for (const node of nodes) {
+            blockchain.addNewNode(node);
+        }
+
+        res.send({
+            message: 'New nodes have been added to the blockchain',
+            nodes: blockchain.network.nodes
+        });
+    }
+
+    public resolveNodeConflicts(req: Request, res: Response) {
+        const isBlockchainReplaced = blockchain.resolveConflicts();
+
+        if (isBlockchainReplaced) {
+            res.send({
+                message: 'The chain has been replaced',
+                chain: blockchain.chain
+            });
+        } else {
+            res.send({
+                message: 'The chain is authoritative and is not replaced',
+                chain: blockchain.chain
+            });
+        }
     }
 }
 

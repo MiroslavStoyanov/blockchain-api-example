@@ -26,6 +26,7 @@
     "express": "^4.18.2",
     "level": "^8.0.0",
     "path": "^0.12.7",
-    "routing-controllers": "^0.10.1"
+    "routing-controllers": "^0.10.1",
+    "url-parse": "^1.5.10"
   }
 }

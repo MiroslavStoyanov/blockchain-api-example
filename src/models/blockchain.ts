@@ -1,4 +1,5 @@
 import axios from 'axios';
+import urlParse from 'url-parse';
 import Block from "../models/block";
 import Network from "./network";
 import Transaction from "./transaction";
@@ -87,6 +88,16 @@ export default class Blockchain {
         }
 
         return true;
+    }
+
+    /**
+    * Adds a new node to the current list of nodes in the blockchain.
+    *
+    * @param {string}  address The address of the node
+    */
+    public addNewNode(address: string) {
+        const url = urlParse(address);
+        this.network.nodes.add(url.host);
     }
 
     /**
